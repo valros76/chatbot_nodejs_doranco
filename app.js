@@ -14,6 +14,7 @@ const {Server} = require("socket.io");
 // On définit les ressources que le serveur a le droit d'utiliser.
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json()); // On autorise ici le serveur à lire les données JSON dans le corps des requêtes
+app.set('trust proxy', true);
 
 // On connecte mongoDb avec mongoose
 // mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/chatbot_nodejs`)
@@ -27,6 +28,8 @@ const io = new Server(server);
 
 // On définit une route pour la d'accueil
 app.get("/", (req, res) => {
+  console.log(`Bienvenue ${req.ip} !`);
+  console.table(localStorage);
   res.status(200).sendFile(path.join(__dirname, "public", "index.html"));
 });
 
