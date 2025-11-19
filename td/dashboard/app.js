@@ -9,6 +9,7 @@ const __dirname = path.resolve();
 
 
 app.use(express.static(path.join(__dirname, "public")));
+app.set('trust proxy', true)
 
 function generateRandomDatas() {
   const randomNumber = Number((Math.random() * 100).toFixed(0));
@@ -24,6 +25,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 app.get("/", (req, res) => {
+  console.log(`Bienvenue ${req.ip} !`);
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
