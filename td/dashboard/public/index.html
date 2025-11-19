@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="./sources/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>
+      My Dashboard
+    </h1>
+  </header>
+
+  <main class="main-content">
+    <article>
+      <h2>
+        Stocks produits
+      </h2>
+      <p id="productAStock">
+        ⌛
+      </p>
+      <meter value="0" min="0" max="100" id="productAStockMeter"></meter>
+    </article>
+
+    <article>
+      <h2>
+        État du stock
+      </h2>
+      <p id="statusService">
+        ⌛
+      </p>
+    </article>
+  </main>
+
+  <script src="./socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on("new datas", (datas) => {
+      console.table(datas);
+      const productAStock = document.getElementById("productAStock");
+      const productAStockMeter = document.getElementById("productAStockMeter");
+      const statusService = document.getElementById("statusService");
+      productAStock.textContent = datas.productAStock;
+      productAStockMeter.value = datas.productAStock;
+      switch(true){
+        case (datas.statusService > 50 && datas.statusService <= 100):
+          statusService.textContent = "High stock";
+          statusService.className = "status-ok";
+        break;
+        
+        case (datas.statusService > 30 && datas.statusService <= 50):
+          statusService.textContent = "Mid stock";
+          statusService.className = "status-warning";
+        break;
+        
+        case (datas.statusService >= 0 && datas.statusService <= 30):
+        default:
+          statusService.textContent = "Low stock";
+          statusService.className = "status-issue";
+        break;
+
+      }
+    });
+  </script>
+</body>
+</html>

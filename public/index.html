@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Mon premier chatbot
+  </title>
+  <style>
+    *,
+    *::before,
+    *::after{
+      box-sizing:border-box;
+    }
+    body{
+      font-family:system-ui, sans-serif;
+    }
+    .chat-container{
+      width:400px;
+      margin:20px auto;
+      border:1px solid #ccc;
+      padding:10px;
+    }
+    .messages{
+      height:300px;
+      overflow-y:scroll;
+      border:1px solid #eee;
+      padding:10px;
+    }
+    .input-box{
+      width:100%;
+      padding:5px;
+      margin-top:10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h1>
+      Bienvenue sur mon chatbot !
+    </h1>
+    <div class="messages" id="messages"></div>
+    <input type="text" id="inputMessage" class="input-box" placeholder="Entrez votre message ici...">
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const messagesDiv = document.querySelector("#messages");
+    const inputMessage = document.querySelector("#inputMessage");
+    // On se connecte au serveur Socket.io
+    const socket = io();
+
+    // Fonction d'affichage des messages
+    function appendMessage(sender, message){
+      const messageElement = document.createElement("div");
+      messageElement.textContent = `${sender}: ${message}`;
+      messagesDiv.appendChild(messageElement);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // On écoute les messages qui proviennent du serveur
+    socket.on("chat message", (msg)=>{
+      appendMessage("Chatbot", msg);
+    });
+
+    // Gérer l'envoi de messages de la part de l'utilisateur
+    inputMessage.addEventListener("keypress", async (e) => {
+      if(e.key === "Enter" && inputMessage.value.trim() !== ""){
+        const userMessage = inputMessage.value.trim();
+        appendMessage("Moi", userMessage);
+        inputMessage.value = "";
+
+        // On tente un envoi du message au serveur
+        try{
+
+          // On envoie le message au serveur via les WebSockets
+          socket.emit("chat message", userMessage);
+
+        }catch(err){
+          console.error("Erreur: ", err);
+          appendMessage("Chatbot", "Oups, il y a eu une erreur.");
+        }
+      }
+    });
+  </script>
+</body>
+</html>

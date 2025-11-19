@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+</head>
+<body>
+  <header class="main-head">
+    <h1>
+      Page d'accueil
+    </h1>
+  </header>
+
+  <section class="main-sections" id="articlesSection">
+    <h2 class="main-sections-title">
+      Liste des articles
+    </h2>
+  </section>
+
+  <script>
+    const articlesSection = document.getElementById("articlesSection");
+
+    const fetchArticles =  (async () => {
+      try{
+        const response = await fetch("/api/datas/articles", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: null
+          })
+        });
+
+        const articles = await response.json();
+
+        articles.forEach(article => {
+          const articleContainer = document.createElement("article");
+          const articleTitle = document.createElement("h2");
+          const articleDate = new Date(article.publicationDate);
+          articleTitle.textContent = `${article.title} - ${articleDate.getDay() < 10 ? "0"+articleDate.getDay() : articleDate.getDay()}/${articleDate.getMonth() < 10 ? "0"+articleDate.getMonth() : articleDate.getMonth()}/${articleDate.getFullYear()}`;
+          articleContainer.appendChild(articleTitle);
+          const articleAuthor = document.createElement("p");
+          articleAuthor.textContent = `Par : ${article.author}.`;
+          articleContainer.appendChild(articleAuthor);
+          const articleContent = document.createElement("p");
+          articleContent.textContent = article.content;
+          articleContainer.appendChild(articleContent);
+          articlesSection.appendChild(articleContainer);
+        });
+      }catch(err){
+        console.error(err);
+      }
+    })();
+  </script>
+</body>
+</html>

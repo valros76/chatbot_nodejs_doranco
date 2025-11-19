@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article</title>
+</head>
+<body>
+  
+
+  <article id="articleContainer">
+    <h2 id="articleTitle">
+      Article inconnu
+    </h2>
+    <p id="author">
+      Inconnu
+    </p>
+    <p id="content">
+      Cet article n'existe pas dans la base de données.
+    </p>
+  </article>
+
+  <script>
+    const articleContainer = document.getElementById("articleContainer");
+    const articleTitle = document.getElementById("articleTitle");
+    const author = document.getElementById("author");
+    const content = document.getElementById("content");
+
+    const url = window.location;
+    const pathname = url.pathname;
+    const articleId = pathname.replace("/articles/", "");
+
+    const fetchArticle = (async () => {
+      try{
+        const response = await fetch(`/api/datas/articles/${articleId}`);
+
+        const article = await response.json();
+
+        const articleDate = new Date(article.publicationDate);
+
+        articleTitle.textContent = `${article.title} - ${articleDate.getDay() < 10 ? "0" + articleDate.getDay() : articleDate.getDay()}/${articleDate.getMonth() < 10 ? "0"+articleDate.getMonth() : articleDate.getMonth()}/${articleDate.getFullYear()}`;
+        author.textContent = article.author;
+        content.textContent = article.content;
+      }catch(err){
+        console.error(err);
+      }
+    })();
+    console.log(articleId);
+  </script>
+</body>
+</html>

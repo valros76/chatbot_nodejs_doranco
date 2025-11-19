@@ -1,0 +1,24 @@
+{
+  "name": "doranco-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.4",
+    "nodemon": "^3.1.11",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.5"
+  }
+}
