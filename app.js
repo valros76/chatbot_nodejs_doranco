@@ -28,8 +28,6 @@ const io = new Server(server);
 
 // On définit une route pour la d'accueil
 app.get("/", (req, res) => {
-  console.log(`Bienvenue ${req.ip} !`);
-  console.table(localStorage);
   res.status(200).sendFile(path.join(__dirname, "public", "index.html"));
 });
 
@@ -119,7 +117,6 @@ app.use((req, res, next) => {
 // On écoute les connexions aux webSockets
 io.on("connection", (socket)=>{
   console.log("Un utilisateur s'est connecté.");
-  console.table(localStorage);
 
   // Écouter les émissions de type "chat message" qui proviennent du client
   socket.on("chat message", async (userMessage) => {
