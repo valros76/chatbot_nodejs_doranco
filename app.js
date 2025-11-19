@@ -17,7 +17,7 @@ app.use(express.json()); // On autorise ici le serveur à lire les données JSON
 
 // On connecte mongoDb avec mongoose
 // mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/chatbot_nodejs`)
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}?appName=Cluster0`)
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/chatbot_nodejs?appName=Cluster0`)
   .then(() => console.log("Connecté à la base de données MongoDB."))
   .catch(err => console.error(`Erreur de connexion à la base de données : ${err}.`));
 
