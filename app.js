@@ -119,6 +119,7 @@ app.use((req, res, next) => {
 // On écoute les connexions aux webSockets
 io.on("connection", (socket)=>{
   console.log("Un utilisateur s'est connecté.");
+  console.table(localStorage);
 
   // Écouter les émissions de type "chat message" qui proviennent du client
   socket.on("chat message", async (userMessage) => {
